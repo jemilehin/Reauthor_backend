@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon server.ts"
+  },
   "dependencies": {
     "@prisma/client": "^5.4.2",
     "bcrypt": "^5.1.1",
