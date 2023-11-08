@@ -15,27 +15,35 @@ model User {
   firstname         String
   lastname          String
   email             String?  @unique
+  password          String   @db.VarChar
   phone             String?  @unique
+  mobile            String?
   usertype          String
-  address           String
-  city              String
-  state             String
+  address           String?
+  city              String?
+  state             String?
   ratings           Int?
   cover_image       Bytes?
   profile_image     Bytes?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt 
 }
 
 model Organization {
   id                Int       @id @default(autoincrement())
   organization_name String
   email             String?    @unique
+  password          String     @db.VarChar
   phone             String?    @unique
+  mobile            String?
   usertype          String
-  address           String
-  city              String
-  state             String
+  address           String?
+  city              String?
+  state             String?
   ratings           Int?
   cover_image       Bytes?
   profile_image     Bytes?
-  org_cert          Bytes? 
+  org_cert          Bytes?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt 
 }
