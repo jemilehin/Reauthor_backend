@@ -43,7 +43,7 @@ class User {
                 }, process.env.SECRET_KEY, {
                     expiresIn: "1D"
                 });
-                res.status(200).send({ message: message, auth_token: token, user_id: user.id });
+                res.status(200).send({ message: message, auth_token: token, user: user });
             }
             catch (error) {
                 res.status(400).send({ error: error, message: 'bad request' });

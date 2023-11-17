@@ -11,9 +11,27 @@ datasource db {
 }
 
 model User {
-  id                Int     @id @default(autoincrement())
-  firstname         String
-  lastname          String
+  id                 Int               @id @default(autoincrement())
+  firstname          String
+  lastname           String
+  email              String?           @unique
+  password           String            @db.VarChar
+  phone              String?           @unique
+  mobile             String?
+  usertype           String
+  address            String?
+  city               String?
+  state              String?
+  ratings            Int?
+  cover_image        Bytes?
+  profile_image      Bytes?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+}
+
+model Organization {
+  id                Int      @id @default(autoincrement())
+  organization_name String
   email             String?  @unique
   password          String   @db.VarChar
   phone             String?  @unique
@@ -25,25 +43,58 @@ model User {
   ratings           Int?
   cover_image       Bytes?
   profile_image     Bytes?
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt 
+  org_cert          Bytes?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 
-model Organization {
-  id                Int       @id @default(autoincrement())
-  organization_name String
-  email             String?    @unique
-  password          String     @db.VarChar
-  phone             String?    @unique
-  mobile            String?
-  usertype          String
-  address           String?
-  city              String?
-  state             String?
-  ratings           Int?
-  cover_image       Bytes?
-  profile_image     Bytes?
-  org_cert          Bytes?
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt 
+model Property {
+  id                 Int       @id @default(autoincrement())
+  title              String
+  type               String
+  landed_property    Boolean
+  state              String
+  city               String
+  user_id            Int
+  user_type          String
+  views              BigInt?
+  tags               String[] @default([])
+  price              BigInt?
+  price_per_annum    BigInt?
+  price_per_month    BigInt?
+  images             Bytes[] @default([])
+  display_img        Bytes?
+  auction            Boolean?
+  auctioned_id       Int?        // id of auntioned property
+  auction_date       DateTime?
+  auction_start_time DateTime?
+  auction_end_time   DateTime?
+  starting_price     BigInt?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+}
+
+model Auctioned_Property {
+  id                      Int      @id @default(autoincrement())
+  auction_date            DateTime
+  auction_start_time      DateTime
+  auction_end_time        DateTime
+  auctioneer_user_id      Int       // gotten from user that created the property
+  property_auctioned_id   Int       // property that is on action
+  bid_change              BigInt
+  participants            Int[] @default([])
+  current_bid             BigInt?
+  starting_price          BigInt?
+  auction_winner_id       Int       // participant id of the auctioned property 
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+}
+
+model Auction_Participants {
+  id                  Int  @id @default(autoincrement())
+  user_id             Int // user id
+  auction_property_id Int // property id on auction
+  bid_price           BigInt
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
 }
