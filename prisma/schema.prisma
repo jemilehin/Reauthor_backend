@@ -57,14 +57,14 @@ model Property {
   city               String
   user_id            Int
   user_type          String
-  views              BigInt?
+  views              Int?     @default(0)
   tags               String[] @default([])
-  price              BigInt?
-  price_per_annum    BigInt?
-  price_per_month    BigInt?
-  images             Bytes[] @default([])
-  display_img        Bytes?
-  auction            Boolean?
+  price              String?
+  price_per_annum    String?
+  price_per_month    String?
+  images             String[] @default([])
+  display_img        String?
+  auction            Boolean? @default(false)
   auctioned_id       Int?        // id of auntioned property
   auction_date       DateTime?
   auction_start_time DateTime?
@@ -81,10 +81,10 @@ model Auctioned_Property {
   auction_end_time        DateTime
   auctioneer_user_id      Int       // gotten from user that created the property
   property_auctioned_id   Int       // property that is on action
+  starting_price          BigInt
   bid_change              BigInt
   participants            Int[] @default([])
   current_bid             BigInt?
-  starting_price          BigInt?
   auction_winner_id       Int       // participant id of the auctioned property 
   createdAt               DateTime          @default(now())
   updatedAt               DateTime          @updatedAt

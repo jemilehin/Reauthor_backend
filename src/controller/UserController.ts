@@ -29,6 +29,7 @@ class User {
       }, process.env.SECRET_KEY, {
         expiresIn: "1D"
       });
+      req.set
       res.status(200).send({message: message, auth_token: token, user: user});
     } catch (error) {
       res.status(400).send({error: error, message: 'bad request'});
@@ -101,7 +102,46 @@ class User {
     }
   }
 
-  
+  public async updateUserDetails(req,res){
+    const user_id = Number(req.params.id)
+    const data = req.body
+    const user = await prisma.user.findUnique({where: {id: user_id}})
+
+    try {
+      if(user == null){
+        throw new Error('User does not exist')
+      }
+
+      let user_update_data = await prisma.user.update({where: {id: user_id}, data: data})
+      res.status(200).send({
+        message: 'User data successfully updated',
+        user: exclude(user_update_data, 'password')
+      })
+    } catch (error) {
+      res.status(400).send({error: error})
+    }  
+  }
+
+  public async deleteUser(req, res) {
+    const user_id = Number(req.params.id);
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: user_id },
+      });
+      if (user === null) {
+        throw new Error("User does not exist");
+      }
+
+      await prisma.user.delete({ where: { id: user_id } });
+      res.status(200).send({
+        message: "User successfully deleted",
+      });
+    } catch (error: any) {
+      if (typeof error.message == "undefined") {
+        res.status(400).send({ message: error });
+      } else res.status(400).send({ message: error.message });
+    }
+  }
 }
 
 export default User;

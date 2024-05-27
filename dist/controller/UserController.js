@@ -43,6 +43,7 @@ class User {
                 }, process.env.SECRET_KEY, {
                     expiresIn: "1D"
                 });
+                req.set;
                 res.status(200).send({ message: message, auth_token: token, user: user });
             }
             catch (error) {
@@ -116,6 +117,50 @@ class User {
             }
             catch (error) {
                 res.status(400).send({ data: { message: 'user does not exist' } });
+            }
+        });
+    }
+    updateUserDetails(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user_id = Number(req.params.id);
+            const data = req.body;
+            const user = yield clientInstance_1.default.user.findUnique({ where: { id: user_id } });
+            try {
+                if (user == null) {
+                    throw new Error('User does not exist');
+                }
+                let user_update_data = yield clientInstance_1.default.user.update({ where: { id: user_id }, data: data });
+                res.status(200).send({
+                    message: 'User data successfully updated',
+                    user: (0, worker_1.exclude)(user_update_data, 'password')
+                });
+            }
+            catch (error) {
+                res.status(400).send({ error: error });
+            }
+        });
+    }
+    deleteUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user_id = Number(req.params.id);
+            try {
+                const user = yield clientInstance_1.default.user.findUnique({
+                    where: { id: user_id },
+                });
+                if (user === null) {
+                    throw new Error("User does not exist");
+                }
+                yield clientInstance_1.default.user.delete({ where: { id: user_id } });
+                res.status(200).send({
+                    message: "User successfully deleted",
+                });
+            }
+            catch (error) {
+                if (typeof error.message == "undefined") {
+                    res.status(400).send({ message: error });
+                }
+                else
+                    res.status(400).send({ message: error.message });
             }
         });
     }
