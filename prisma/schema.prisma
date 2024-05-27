@@ -59,6 +59,7 @@ model Property {
   user_type          String
   views              Int?     @default(0)
   tags               String[] @default([])
+  description        String?
   price              String?
   price_per_annum    String?
   price_per_month    String?

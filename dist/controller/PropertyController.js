@@ -28,7 +28,8 @@ class PropertyClass {
             const landed_property = typeof req.body.landed_property !== "boolean"
                 ? Boolean(req.body.landed_property)
                 : req.body.landed_property;
-            req.body = Object.assign(Object.assign({}, req.body), { createdAt: createdAt, updatedAt: createdAt, landed_property: landed_property, user_id: Number(req.body.user_id), images: typeof req.files.images === 'undefined' || typeof req.files.images === 'string' ? [] : req.files.images });
+            let formatCityStringToLowerCase = req.body.city.toLowerCase();
+            req.body = Object.assign(Object.assign({}, req.body), { city: formatCityStringToLowerCase, createdAt: createdAt, updatedAt: createdAt, landed_property: landed_property, user_id: Number(req.body.user_id), images: typeof req.files.images === 'undefined' || typeof req.files.images === 'string' ? [] : req.files.images });
             const isAuctionExist = req.body.hasOwnProperty("auction")
                 ? req.body.auction
                 : false;
@@ -147,7 +148,6 @@ class PropertyClass {
             const property_id = Number(req.params.id);
             const user_id = Number(req.query.user_id);
             let imagesFiles = req.files;
-            console.log(req.files.images);
             const MaxImage = 5;
             let uploadImageErrorMessage = '';
             console.log(imagesFiles);

@@ -23,10 +23,6 @@ router.get('/public/user/:id', propertyClass.getPropertiesByUser);
 router.get('/user/:id', worker_1.verifyToken, propertyClass.getPropertiesByUser);
 router.post('/search', propertyClass.searchProperty);
 router.put('/display_image/:id', worker_1.verifyToken, worker_1.upload.fields([{ name: 'display_img', maxCount: 1 }]), propertyClass.updatePropertyImageDisplay);
-// -----------------------------
-// test new api below 
-// -----------------------------
-// test new api below with internet
 router.put('/images/:id', worker_1.verifyToken, (req, res) => {
     let imagesupload = worker_1.upload.array('images', 5);
     imagesupload(req, res, function (err) {
@@ -36,10 +32,12 @@ router.put('/images/:id', worker_1.verifyToken, (req, res) => {
         else if (err) {
             return res.status(400).send(err);
         }
-        // res.status(200).json(req.files);
         propertyClass.updatePropertyGallery(req, res);
     });
-    // upload.fields([{name: 'images', maxCount: 5}])
 });
+// -----------------------------
+// test new api below 
+// -----------------------------
+// test new api below with internet
 exports.default = router;
 //# sourceMappingURL=PropertyRoutes.js.map

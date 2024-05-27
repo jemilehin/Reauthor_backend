@@ -17,8 +17,10 @@ class PropertyClass {
       typeof req.body.landed_property !== "boolean"
         ? Boolean(req.body.landed_property)
         : req.body.landed_property;
+    let formatCityStringToLowerCase = req.body.city.toLowerCase()
     req.body = {
       ...req.body,
+      city: formatCityStringToLowerCase,
       createdAt: createdAt,
       updatedAt: createdAt,
       landed_property: landed_property,
@@ -32,7 +34,6 @@ class PropertyClass {
       req.files.length > 0
         ? req.files.display_img[0].buffer.toString("base64")
         : "";
-
     try {
       if (!isAuctionExist) {
         if (
@@ -79,7 +80,7 @@ class PropertyClass {
                 ...req.body,
                 [element]: req.body[element].toString(),
               };
-            }
+            }else res.status(400).send('Add Price or Price Per Annum or Price Per Month to your property')
           }
           const property = await prisma.property.create({ data: req.body });
           res.status(200).send({
