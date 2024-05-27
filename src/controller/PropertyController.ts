@@ -80,14 +80,14 @@ class PropertyClass {
                 ...req.body,
                 [element]: req.body[element].toString(),
               };
-            }else res.status(400).send('Add Price or Price Per Annum or Price Per Month to your property')
+            }else throw new Error('Value of property is missing.')
           }
           const property = await prisma.property.create({ data: req.body });
           res.status(200).send({
             message: "Property successfully created",
             property: property,
           });
-        } else throw new Error();
+        } else throw new Error('Price ,Price Per Annum or Price Per Month is missing. Kindly add a price type appropraite to your property');
       }
     } catch (error: any) {
       if (typeof error.message === "undefined") {

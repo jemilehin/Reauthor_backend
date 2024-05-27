@@ -63,6 +63,8 @@ class PropertyClass {
                             if (typeof req.body[element] !== "undefined") {
                                 req.body = Object.assign(Object.assign({}, req.body), { [element]: req.body[element].toString() });
                             }
+                            else
+                                throw new Error('Value of property is missing.');
                         }
                         const property = yield clientInstance_1.default.property.create({ data: req.body });
                         res.status(200).send({
@@ -71,7 +73,7 @@ class PropertyClass {
                         });
                     }
                     else
-                        throw new Error();
+                        throw new Error('Price ,Price Per Annum or Price Per Month is missing. Kindly add a price type appropraite to your property');
                 }
             }
             catch (error) {
