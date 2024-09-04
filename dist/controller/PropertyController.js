@@ -55,16 +55,22 @@ class PropertyClass {
                                 return result.secure_url;
                             }));
                             const results_images = yield yield Promise.all(images);
-                            req.body = Object.assign({}, req.body);
+                            req.body = Object.assign(Object.assign({}, req.body), { images: results_images });
                         }
                         const prices = ["price", "price_per_annum", "price_per_month"];
+                        const priceValue = [];
                         for (let i = 0; i < prices.length; i++) {
                             const element = prices[i];
-                            if (typeof req.body[element] !== "undefined") {
+                            if (typeof req.body[element] !== "undefined" && req.body[element] !== '') {
                                 req.body = Object.assign(Object.assign({}, req.body), { [element]: req.body[element].toString() });
                             }
                             else
-                                throw new Error('Value of property is missing.');
+                                priceValue.push({ title: [element], value: req.body[element] });
+                        }
+                        // console.log(req.body, priceValue.length, priceValue)
+                        if (priceValue.length == 3) {
+                            const index = priceValue.findIndex(v => v.value == '');
+                            throw new Error(`value of ${priceValue[index].title} is not given`);
                         }
                         const property = yield clientInstance_1.default.property.create({ data: req.body });
                         res.status(200).send({
@@ -73,7 +79,7 @@ class PropertyClass {
                         });
                     }
                     else
-                        throw new Error('Price ,Price Per Annum or Price Per Month is missing. Kindly add a price type appropraite to your property');
+                        throw new Error('Price ,Price Per Annum or Price Per Month is missing. Kindly add a price type appropraite to your property listing');
                 }
             }
             catch (error) {
@@ -132,6 +138,7 @@ class PropertyClass {
                 var display_img = yield cloudinary.uploader.upload(`data:image/png;base64,${img_file.buffer.toString("base64")}`, {
                     folder: "display_img",
                 });
+                console.log(display_img);
                 let updatedProperty = yield clientInstance_1.default.property.update({ where: { id: property.id }, data: { display_img: display_img.secure_url } });
                 res.status(200).send({ message: 'Image updated successfully', property: updatedProperty });
             }
@@ -303,6 +310,8 @@ class PropertyClass {
             }
         });
     }
+    // either or both city and state field must be send in for request
+    // querying.
     searchProperty(req, res) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
