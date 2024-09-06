@@ -4,13 +4,13 @@ on:
   push:
 jobs:
   raise-pullrequest:
-    runs-on: ubuntu-24.04 [Beta]
+    runs-on: ubuntu-latest
     steps:
       - run: gh pr create
 
   merge-pullrequest:
     if: ${{ github.event.pull_request.merged == true }}
-    runs-on: ubuntu-24.04 [Beta]
+    runs-on: ubuntu-latest
     steps:
       - run: gh pr merge PULL-REQUEST
 
