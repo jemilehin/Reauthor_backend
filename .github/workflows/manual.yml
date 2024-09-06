@@ -9,8 +9,11 @@ jobs:
     runs-on: ubuntu-24.04 [Beta]
     steps:
       - run: gh pr create
-      - if: ${{ github.event.pull_request.merged == true }}
+
+  merge-pullrequest:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-24.04 [Beta]
+    steps:
       - run: gh pr merge PULL-REQUEST
-            echo 'Merge Successful'
 
 
