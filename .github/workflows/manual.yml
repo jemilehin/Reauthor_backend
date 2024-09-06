@@ -1,9 +1,7 @@
 
 name: Merge_Main
 on: 
-  push: 
-     branches-ignore:
-       - main
+  push:
 jobs:
   raise-pullrequest:
     runs-on: ubuntu-24.04 [Beta]
