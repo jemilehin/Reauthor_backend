@@ -3,11 +3,13 @@ import prisma from "../clientInstance";
 import { Paginate } from "../middlewares/middleware.index";
 import { exclude } from "../worker";
 const cloudinary = require("cloudinary").v2;
+const dotenv = require('dotenv');
+dotenv.config()
 
 cloudinary.config({
-  cloud_name: "dj6k28np4",
-  api_key: 868967674589778,
-  api_secret: "M4RY3CQM3ANrcbHceNMn_wOM8qg",
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
 });
 
 class PropertyClass {
