@@ -1,4 +1,16 @@
 
-name: Reauthor Automated workflow
+name: Merge_Main
+on: 
+  push: 
+     branches-ignore:
+       - main
+jobs:
+  raise-pullrequest:
+    runs-on: ubuntu-24.04 [Beta]
+    steps:
+      - run: gh pr create
+      - if: ${{ github.event.pull_request.merged == true }}
+      - run: gh pr merge PULL-REQUEST
+            echo 'Merge Successful'
 
 
