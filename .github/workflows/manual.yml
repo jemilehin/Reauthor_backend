@@ -6,7 +6,7 @@ jobs:
   raise-pullrequest:
     runs-on: ubuntu-latest
     steps:
-      - run: gh pr create -f ${{github.event.base_ref}}
+      - run: gh pr create -f ${{github.ref_name}}
         env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
